@@ -13,20 +13,19 @@ public class Calculator {
         System.out.println("Enter an expression: ");
         String line = consoleReader.readLine();
 
-        String[] operations = stringSplitter.getOperationsFromString(line);
+        String[] operations = stringSplitter.getMathOperationsFromString(line);
         System.out.println(Arrays.toString(operations));
 
         String[] numbers = stringSplitter.getNumbersFromString(line);
         System.out.println(Arrays.toString(numbers));
 
-        int[] numbersConverted = stringConverter.convertStringToInt(numbers);
+        int[] numbersConverted = stringConverter.convertStringArrayToIntArray(numbers);
         System.out.println(Arrays.toString(numbersConverted));
 
         int result = calculate(operations, numbersConverted);
         System.out.println(result);
     }
 
-    // ORIGINAL
     private static int[] convert(String[] numbers) {
         int[] numbersConverted = new int[numbers.length];
         for (int i = 0; i < numbers.length; i++) {
@@ -37,39 +36,39 @@ public class Calculator {
     }
 
     public static int calculate(String[] operations, int[] numbers) {
-        int length = operations.length;
-        int index = 1;
-        while (index < length) {
-            if ("*".equals(operations[index])) { // NEM!!! "*" == operations[i]
-                performOperation(numbers, index, '*');
-                sortElements(index, length, operations, numbers);
-                length--;
-            } else if ("/".equals(operations[index])) { // NEM!!! "/" == operations[i]
-                performOperation(numbers, index, '/');
-                sortElements(index, length, operations, numbers);
-                length--;
-            } else {
-                index++;
-            }
-        }
-        index = 1;
-        while (index < length) {
-            if ("+".equals(operations[index])) { // NEM!!! "+" == operations[i]
-                performOperation(numbers, index, '+');
-                sortElements(index, length, operations, numbers);
-                length--;
-            } else if ("-".equals(operations[index])) { // NEM!!! "-" == operations[i]
-                performOperation(numbers, index, '-');
-                sortElements(index, length, operations, numbers);
-                length--;
-            } else {
-                index++;
-            }
-        }
+        performMultipliesAndDivides(operations, numbers);
+        performSumsAndSubtractions(operations, numbers);
         return numbers[0];
     }
 
-    private static void performOperation(int[] numbers, int index, char operator) {
+    private static void performMultipliesAndDivides(String[] operations, int[] numbers) {
+        performOperations(operations, numbers, "*", "/");
+    }
+
+    private static void performSumsAndSubtractions(String[] operations, int[] numbers) {
+        performOperations(operations, numbers, "+", "-");
+    }
+
+    private static void performOperations(String[] operations, int[] numbers, String firstOperator, String secondOperator) {
+        int length = operations.length;
+        int index = 1;
+        while (index < length) {
+            String operation = operations[index];
+            if (currentOperationMatchesForInput(operation, firstOperator, secondOperator)) {
+                performSingleOperation(numbers, index, operation.charAt(0));
+                moveElementsInArraysToLeft(index, length, operations, numbers);
+                length--;
+            } else {
+                index++;
+            }
+        }
+    }
+
+    private static boolean currentOperationMatchesForInput(String operation, String firstOperator, String secondOperator) {
+        return (firstOperator.equals(operation)) || (secondOperator.equals(operation));
+    }
+
+    private static void performSingleOperation(int[] numbers, int index, char operator) {
         switch (operator) {
             case '+':
                 numbers[index - 1] += numbers[index];
@@ -85,11 +84,12 @@ public class Calculator {
         }
     }
 
-    private static void sortElements(int index, int length, String[] operations, int[] numbers) {
+    private static void moveElementsInArraysToLeft(int index, int length, String[] operations, int[] numbers) {
         for (int j = index; j < length - 1; j++) {
             numbers[j] = numbers[j + 1];
             operations[j] = operations[j + 1];
             operations[j + 1] = null;
         }
     }
+
 }

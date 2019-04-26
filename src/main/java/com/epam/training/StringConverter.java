@@ -1,12 +1,12 @@
 package com.epam.training;
 
-public class StringConverter {
-    int[] convertStringToInt(String[] numbers) {
-        int[] numbersConverted = new int[numbers.length];
-        for (int i = 0; i < numbers.length; i++) {
-            numbersConverted[i] = Integer.valueOf(numbers[i]);
-        }
+import java.util.Arrays;
 
-        return numbersConverted;
+public class StringConverter {
+
+    int[] convertStringArrayToIntArray(String[] numbers) {
+        return Arrays.stream(numbers)
+                .mapToInt(Integer::parseInt)
+                .toArray();
     }
 }

@@ -26,16 +26,7 @@ public class Calculator {
         System.out.println(result);
     }
 
-    private static int[] convert(String[] numbers) {
-        int[] numbersConverted = new int[numbers.length];
-        for (int i = 0; i < numbers.length; i++) {
-            numbersConverted[i] = Integer.valueOf(numbers[i]);
-        }
-
-        return numbersConverted;
-    }
-
-    public static int calculate(String[] operations, int[] numbers) {
+    static int calculate(String[] operations, int[] numbers) {
         performMultipliesAndDivides(operations, numbers);
         performSumsAndSubtractions(operations, numbers);
         return numbers[0];
@@ -50,21 +41,21 @@ public class Calculator {
     }
 
     private static void performOperations(String[] operations, int[] numbers, String firstOperator, String secondOperator) {
-        int length = operations.length;
+        int numberOfOperations = operations.length;
         int index = 1;
-        while (index < length) {
+        while (index < numberOfOperations) {
             String operation = operations[index];
-            if (currentOperationMatchesForInput(operation, firstOperator, secondOperator)) {
+            if (currentOperationMatchesForInputOperator(operation, firstOperator, secondOperator)) {
                 performSingleOperation(numbers, index, operation.charAt(0));
-                moveElementsInArraysToLeft(index, length, operations, numbers);
-                length--;
+                moveElementsInArraysToLeft(index, numberOfOperations, operations, numbers);
+                numberOfOperations--;
             } else {
                 index++;
             }
         }
     }
 
-    private static boolean currentOperationMatchesForInput(String operation, String firstOperator, String secondOperator) {
+    private static boolean currentOperationMatchesForInputOperator(String operation, String firstOperator, String secondOperator) {
         return (firstOperator.equals(operation)) || (secondOperator.equals(operation));
     }
 
@@ -84,8 +75,8 @@ public class Calculator {
         }
     }
 
-    private static void moveElementsInArraysToLeft(int index, int length, String[] operations, int[] numbers) {
-        for (int j = index; j < length - 1; j++) {
+    private static void moveElementsInArraysToLeft(int startIndex, int length, String[] operations, int[] numbers) {
+        for (int j = startIndex; j < length - 1; j++) {
             numbers[j] = numbers[j + 1];
             operations[j] = operations[j + 1];
             operations[j + 1] = null;

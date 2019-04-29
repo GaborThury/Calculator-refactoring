@@ -46,7 +46,7 @@ public class Calculator {
         while (index < numberOfOperations) {
             String operation = operations[index];
             if (currentOperationMatchesForInputOperator(operation, firstOperator, secondOperator)) {
-                performSingleOperation(numbers, index, operation.charAt(0));
+                performSingleOperation(numbers, index, operation);
                 moveElementsInArraysToLeft(index, numberOfOperations, operations, numbers);
                 numberOfOperations--;
             } else {
@@ -59,19 +59,15 @@ public class Calculator {
         return (firstOperator.equals(operation)) || (secondOperator.equals(operation));
     }
 
-    private static void performSingleOperation(int[] numbers, int index, char operator) {
-        switch (operator) {
-            case '+':
-                numbers[index - 1] += numbers[index];
-                break;
-            case '-':
-                numbers[index - 1] -= numbers[index];
-                break;
-            case '*':
-                numbers[index - 1] *= numbers[index];
-                break;
-            case '/':
-                numbers[index - 1] /= numbers[index];
+    private static void performSingleOperation(int[] numbers, int index, String operator) {
+        if ("+".equals(operator)) {
+            numbers[index - 1] += numbers[index];
+        } else if ("-".equals(operator)) {
+            numbers[index - 1] -= numbers[index];
+        } else if ("*".equals(operator)) {
+            numbers[index - 1] *= numbers[index];
+        } else if ("/".equals(operator)) {
+            numbers[index - 1] /= numbers[index];
         }
     }
 
@@ -82,5 +78,4 @@ public class Calculator {
             operations[j + 1] = null;
         }
     }
-
 }

@@ -3,10 +3,10 @@ package com.epam.training;
 import java.util.regex.Pattern;
 
 public class StringSplitter {
-    String[] getMathOperationsFromString(String line) {
-         return line.split("[0-9]");
+    public String[] getMathOperationsFromString(String line) {
+         return line.split("[0-9]+");
     }
-    String[] getNumbersFromString(String line) {
+    public String[] getNumbersFromString(String line) {
         return line.split("[" + Pattern.quote("+-*/") + "]");
     }
 }

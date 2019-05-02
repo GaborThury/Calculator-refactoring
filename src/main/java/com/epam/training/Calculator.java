@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class Calculator {
     public static void main(String[] args) throws IOException {
-        ConsoleReader consoleReader = new ConsoleReader();
+        Reader consoleReader = new ConsoleReader();
         StringSplitter stringSplitter = new StringSplitter();
         StringConverter stringConverter = new StringConverter();
 
